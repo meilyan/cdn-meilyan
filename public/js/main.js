@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileElemTrigger = document.getElementById('fileElemTrigger');
   const gallery = document.getElementById('gallery');
 
-  localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2MTE5Mjc3LCJleHAiOjE3MTYxMjI4Nzd9.06Wx_P1F94D5CcmV8Wdi15FO4TmCHKHggrnqPcquH3I')
+  localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2MTI1MjE2LCJleHAiOjE3MTYxMjg4MTZ9.B9fVFJb2u2WP0hhSiygz-XyjdflUIjOeFzXNkCGDXiw')
 
   if (dropArea && fileElem && fileElemTrigger && gallery) {
       fileElemTrigger.addEventListener('click', (e) => {
