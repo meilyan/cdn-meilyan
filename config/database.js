@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   dialect: 'mysql',
 });
 
-console.log(process.env.DB_NAME)
+console.log(process.env.DB_HOST)
 
 sequelize.authenticate()
   .then(() => console.log('Database connected...'))
