@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const sharp = require('sharp');
 const Image = require('../models/Image');
@@ -10,19 +10,32 @@ exports.uploadImage = async (req, res) => {
         const file = req.file;
         const compressedPath = path.join('uploads', 'compressed_' + file.filename);
 
+        console.log('Compressing image...');
         await sharp(file.path)
             .toFormat('jpeg')
-            .jpeg({quality: 80})
+            .jpeg({ quality: 80 })
             .toFile(compressedPath);
 
-        await uploadToFTP (compressedPath, `${process.env.FTP_PATH}/${file.filename}`);
-        const image = await Image.create({userId, url: `${process.env.FTP_PATH}/${file.filename}`, filename: file.filename});
-        
-        fs.unlinkSync(file.path);
-        fs.unlinkSync(compressedPath);
+        console.log('Uploading to FTP...');
+        await uploadToFTP(compressedPath, `${process.env.FTP_PATH}/${file.filename}`);
+        const imageUrl = `https://img.meilyan.online/${file.filename}`;
+        console.log('Creating database entry...');
+        const image = await Image.create({ userId, url: imageUrl, filename: file.filename });
 
-        res.status(201).json({message: 'Image uploaded successfully', image});
+        // Adding a delay before deleting the file
+        setTimeout(async () => {
+            try {
+                await fs.unlink(file.path);
+                await fs.unlink(compressedPath);
+                console.log('Files deleted successfully.');
+            } catch (deleteError) {
+                console.error('Error deleting files:', deleteError);
+            }
+        }, 1000); // 1 second delay
+
+        res.status(201).json({ message: 'Image uploaded successfully', imageUrl });
     } catch (error) {
-        res.status(500).json({error: error.message});
+        console.error('Error during image upload:', error);
+        res.status(500).json({ error: error.message });
     }
 };
