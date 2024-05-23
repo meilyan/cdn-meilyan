@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileElemTrigger = document.getElementById('fileElemTrigger');
   const gallery = document.getElementById('gallery');
 
-  localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2MTI1NDc2fQ.SivKR0l5MnQmI2_s88x9SHesr-j0CrbunvWjen7jBVI')
-
   if (dropArea && fileElem && fileElemTrigger && gallery) {
       fileElemTrigger.addEventListener('click', (e) => {
           e.preventDefault();
@@ -56,15 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
           img.src = URL.createObjectURL(file);
           listItem.appendChild(img);
 
-          const fileName = document.createElement('div');
-          fileName.classList.add('file-name');
-          fileName.textContent = file.name;
-          listItem.appendChild(fileName);
-
           const status = document.createElement('div');
           status.classList.add('status');
           status.textContent = 'Uploading...';
           listItem.appendChild(status);
+
+          const progressBarContainer = document.createElement('div');
+          progressBarContainer.classList.add('progress-bar-container');
+          const progressBar = document.createElement('div');
+          progressBar.classList.add('progress-bar');
+          progressBarContainer.appendChild(progressBar);
+          listItem.appendChild(progressBarContainer);
 
           gallery.appendChild(listItem);
 
@@ -73,21 +73,29 @@ document.addEventListener('DOMContentLoaded', () => {
               const response = await fetch(url, {
                   method: 'POST',
                   headers: {
-                      'Authorization': `Bearer ${token}`
+                      Authorization: `Bearer ${token}`
                   },
                   body: formData
               });
-              const result = await response.json();
-              if (result.error) {
+
+              if (!response.ok) {
+                  const errorDetails = await response.json();
+                  console.error('Error details:', errorDetails);
                   status.textContent = 'Failed';
                   status.style.color = 'red';
               } else {
+                  const result = await response.json();
                   status.textContent = 'Uploaded';
-                  const link = document.createElement('a');
-                  link.href = result.imageUrl;
-          link.textContent = result.imageUrl;
-          link.target = '_blank';
-          listItem.appendChild(link);
+                  progressBar.style.width = '100%';
+                  listItem.dataset.url = result.imageUrl;
+
+                  listItem.addEventListener('click', () => {
+                      navigator.clipboard.writeText(result.imageUrl).then(() => {
+                          alert('URL copied to clipboard');
+                      }).catch(err => {
+                          console.error('Failed to copy: ', err);
+                      });
+                  });
               }
           } catch (error) {
               status.textContent = 'Failed';

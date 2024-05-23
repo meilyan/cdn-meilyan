@@ -4,23 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Uploader</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="upload-box">
-            <h1>Upload</h1>
-            <div id="drop-area" class="drop-area">
-                <form id="uploadForm" class="form">
-                    <input type="file" id="fileElem" accept="image/*" multiple hidden>
-                    <div class="drop-message">
-                        Drag and drop or <span id="fileElemTrigger">browse</span> your files
-                    </div>
-                </form>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="brand">ImageUploader</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container main-content">
+        <div class="upload-section">
+            <div class="upload-box">
+                <div class="header">
+                    <h1>Upload Files</h1>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div id="drop-area" class="drop-area">
+                    <form id="uploadForm" class="form">
+                        <input type="file" id="fileElem" accept="image/*" multiple hidden>
+                        <div class="drop-message">
+                            Drop your files here, or <span id="fileElemTrigger">Browse</span>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        <div id="gallery" class="gallery"></div>
+        <div class="gallery-section">
+            <div id="gallery" class="gallery"></div>
+        </div>
     </div>
-    <script src="/js/main.js"></script>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ImageUploader. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
 </body>
 </html>
