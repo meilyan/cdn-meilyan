@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileElemTrigger = document.getElementById('fileElemTrigger');
   const gallery = document.getElementById('gallery');
 
+  localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2MTI1NDc2fQ.SivKR0l5MnQmI2_s88x9SHesr-j0CrbunvWjen7jBVI')
+
   if (dropArea && fileElem && fileElemTrigger && gallery) {
       fileElemTrigger.addEventListener('click', (e) => {
           e.preventDefault();
